@@ -158,7 +158,8 @@ class PyMongo(object):
         app.url_map.converters["ObjectId"] = BSONObjectIdConverter
 
     # view helpers
-    def send_file(self, filename, base="fs", version=-1, cache_for=31536000):
+    def send_file(self, filename=None, base="fs", version=-1,
+                  cache_for=31536000, **kwargs):
         """Respond with a file from GridFS.
 
         Returns an instance of the :attr:`~flask.Flask.response_class`
@@ -189,7 +190,8 @@ class PyMongo(object):
         storage = GridFS(self.db, base)
 
         try:
-            fileobj = storage.get_version(filename=filename, version=version)
+            fileobj = storage.get_version(filename=filename, version=version,
+                                          **kwargs)
         except NoFile:
             abort(404)
 
